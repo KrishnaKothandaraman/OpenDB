@@ -1,0 +1,90 @@
+from datetime import datetime
+
+from src.app.models.pricing_data_model import PricingData
+from sqlalchemy.orm import Session
+from sqlalchemy import update, case, literal
+
+
+class PricingDataRepository:
+    def __init__(self, session: Session):
+        self.session = session
+
+    def insert_pricing_data(self, sku, activate_pricing_tool, bm_listing_id, model_name, bm_listing_quantity,
+                            rf_listing_quantity, update_time, bm_minimum_price, bm_selling_price, rf_minimum_price,
+                            rf_selling_price, rf_buybox_state, rf_buybox_price, rf_suggested_buybox_price,
+                            grab_rf_buybox):
+        activate_pricing_tool = True if activate_pricing_tool == "Yes" else False
+        grab_rf_buybox = True if grab_rf_buybox == "Yes" else False
+
+        # parse String of format dd/mm/yyyy hh:mm:ss to datetime object
+        update_time = datetime.strptime(update_time, "%d/%m/%Y %H:%M:%S")
+
+        pricing_data = PricingData(sku=sku, activate_pricing_tool=activate_pricing_tool, bm_listing_id=bm_listing_id,
+                                   model_name=model_name,
+                                   bm_listing_quantity=bm_listing_quantity, rf_listing_quantity=rf_listing_quantity,
+                                   update_time=update_time,
+                                   bm_minimum_price=bm_minimum_price, bm_selling_price=bm_selling_price,
+                                   rf_minimum_price=rf_minimum_price, rf_selling_price=rf_selling_price,
+                                   rf_buybox_state=rf_buybox_state, rf_buybox_price=rf_buybox_price,
+                                   rf_suggested_buybox_price=rf_suggested_buybox_price,
+                                   grab_rf_buybox=grab_rf_buybox)
+        self.session.add(pricing_data)
+        self.session.commit()
+        return pricing_data
+
+    def batch_update_pricing_data(self, updates):
+        # create a reverse mapping for updates where each column name is mapped to a here each column name is mapped
+        # to a tuple of (sku, new_value)
+        # e.g. {"bm_minimum_price": [("sku1", 10.0), ("sku2", 20.0)]}
+        # this is needed to construct the case statement
+        col_name_to_sku_new_value = {}
+        for sku, new_values in updates.items():
+            for col_name, new_value in new_values.items():
+                if col_name not in col_name_to_sku_new_value:
+                    col_name_to_sku_new_value[col_name] = []
+                col_name_to_sku_new_value[col_name].append((sku, new_value))
+
+        # construct set statement for each key in col_name_to_sku_new_value e.g. set column_name = case when sku =
+        # sku1 then 10.0 when sku = sku2 then 20.0 end, set column2 = case when sku = sku1 then 10.0 when sku = sku2
+        # then 20.0 end Construct the CASE statements for each column and SKU
+        set_statements = {}
+        for col, sku_new_values in col_name_to_sku_new_value.items():
+            cases = [
+                        (
+                            PricingData.sku == sku,
+                            literal(new_value)
+                        )
+                        for sku, new_value in sku_new_values]
+            case_stmt = case(
+                    *cases,
+                    else_="NULL")
+            set_statements[getattr(PricingData, col)] = case_stmt
+            # create set statement for each column
+
+        update_statement = update(PricingData).\
+            where(PricingData.sku.in_(updates.keys())).\
+            values(set_statements)
+
+        self.session.execute(update_statement)
+        self.session.commit()
+
+    def update_pricing_data(self, sku, new_values):
+        # Construct update query
+        update_query = PricingData.__table__.update().where(PricingData.sku == sku)
+        for col_name, new_value in new_values.items():
+            update_query = update_query.values({col_name: new_value})
+
+        # Execute update query
+        self.session.execute(update_query)
+        self.session.commit()
+
+    def delete_pricing_data(self, sku):
+        self.session.query(PricingData).filter_by(sku=sku).delete()
+        self.session.commit()
+
+    def create_pricing_data(self, sku):
+        self.session.add(PricingData(sku=sku))
+        self.session.commit()
+
+    def get_data(self):
+        return self.session.query(PricingData).all()

@@ -1,0 +1,8 @@
+requests
+SQLAlchemy~=2.0.9
+typing_extensions~=4.5.0
+mysql-connector-python
+charset-normalizer
+python-dotenv~=1.0.0
+Flask
+flask-cors
