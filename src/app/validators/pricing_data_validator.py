@@ -16,7 +16,7 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])
 
     @staticmethod
     def validate_insert_pricing_data(data):
@@ -49,7 +49,7 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])
 
     @staticmethod
     def validate_update_pricing_data(data):
@@ -85,7 +85,7 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])
 
     @staticmethod
     def validate_delete_pricing_data(data):
@@ -101,7 +101,7 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])
 
     @staticmethod
     def validate_get_pricing_data(data):
@@ -138,7 +138,8 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])
+
     @staticmethod
     def validate_batch_update_pricing_data(data):
         # format : {"updates": [{"sku": string, "new_values": {field_name: field_value}}]}
@@ -182,4 +183,4 @@ class PricingDataValidator:
         try:
             validate(instance=data, schema=schema)
         except ValidationError as e:
-            raise ValueError("Invalid JSON format: " + str(e))
+            raise ValueError("Invalid JSON format: " + e.args[0])

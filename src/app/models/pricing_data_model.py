@@ -88,6 +88,25 @@ class PricingData(Base):
                 self.grab_rf_buybox
             ]))
 
+    def to_dict(self):
+        return {
+            "sku": self.sku,
+            "activate_pricing_tool": self.activate_pricing_tool,
+            "bm_listing_id": self.bm_listing_id,
+            "model_name": self.model_name,
+            "total_quantity": self.total_quantity,
+            "bm_listing_quantity": self.bm_listing_quantity,
+            "rf_listing_quantity": self.rf_listing_quantity,
+            "update_time": self.update_time,
+            "bm_minimum_price": self.bm_minimum_price,
+            "bm_selling_price": self.bm_selling_price,
+            "rf_minimum_price": self.rf_minimum_price,
+            "rf_selling_price": self.rf_selling_price,
+            "rf_buybox_state": self.rf_buybox_state,
+            "rf_buybox_price": self.rf_buybox_price,
+            "rf_suggested_buybox_price": self.rf_suggested_buybox_price,
+            "grab_rf_buybox": self.grab_rf_buybox
+        }
     @staticmethod
     def get_str(string) -> str:
         # if string is of type str return it

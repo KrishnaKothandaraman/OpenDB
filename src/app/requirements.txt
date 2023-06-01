@@ -6,3 +6,6 @@ charset-normalizer
 python-dotenv~=1.0.0
 Flask
 flask-cors
+jsonschema
+pytest
+Flask-API

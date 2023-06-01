@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List, Dict, Any
 
 from src.app.models.pricing_data_model import PricingData
 from sqlalchemy.orm import Session
@@ -86,5 +87,8 @@ class PricingDataRepository:
         self.session.add(PricingData(sku=sku))
         self.session.commit()
 
-    def get_data(self):
-        return self.session.query(PricingData).all()
+    def get_data(self, filters: Dict[str, Any] = None):
+        if not filters:
+            return self.session.query(PricingData).all()
+        else:
+            return self.session.query(PricingData).filter_by(**filters)
