@@ -67,7 +67,7 @@ class PricingDataController:
 pricing_data_bp.add_url_rule("create-record", methods=["POST"], view_func=PricingDataController.create_pricing_data)
 pricing_data_bp.add_url_rule("insert-record", methods=["POST"],
                              view_func=PricingDataController.insert_pricing_data)
-pricing_data_bp.add_url_rule("batch-update-record", methods=["POST"],
+pricing_data_bp.add_url_rule("batch-update-records", methods=["POST"],
                              view_func=PricingDataController.batch_update_pricing_data)
 pricing_data_bp.add_url_rule("update-record", methods=["POST"],
                              view_func=PricingDataController.update_pricing_data)
