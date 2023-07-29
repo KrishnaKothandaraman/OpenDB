@@ -79,4 +79,4 @@ class PricingDataService:
 
         res = self.repository.get_data(filters["filter"])
         # return res in the form of [{field_name: field_val}]
-        return [item.to_dict() for item in res]
+        return [item.to_dict_with_metadata() for item in res]

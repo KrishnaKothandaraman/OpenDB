@@ -1,3 +1,4 @@
+import sqlalchemy.exc
 from flask import Blueprint, jsonify, request
 from src.app.services.pricing_data_service import PricingDataService
 from src.app.utils.utils import create_database_engine
@@ -17,6 +18,9 @@ class PricingDataController:
 
         except ValueError as e:
             return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
+        except sqlalchemy.exc.IntegrityError as e:
+            return jsonify(ApiResponse.fail("Integrity check breaks for DB. Possible Duplicate Entry")), status.HTTP_400_BAD_REQUEST
+
 
     @staticmethod
     def insert_pricing_data():
@@ -43,6 +47,7 @@ class PricingDataController:
             result = data_service.update_pricing_data(json_data)
             return jsonify(ApiResponse.success(result)), status.HTTP_202_ACCEPTED
         except ValueError as e:
+            print(f"Error: {e}")
             return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
 
     @staticmethod
@@ -73,4 +78,4 @@ pricing_data_bp.add_url_rule("update-record", methods=["POST"],
                              view_func=PricingDataController.update_pricing_data)
 pricing_data_bp.add_url_rule("delete-record", methods=["POST"],
                              view_func=PricingDataController.delete_pricing_data)
-pricing_data_bp.add_url_rule("get-record", methods=["POST"], view_func=PricingDataController.get_data)
+pricing_data_bp.add_url_rule("get-records", methods=["POST"], view_func=PricingDataController.get_data)

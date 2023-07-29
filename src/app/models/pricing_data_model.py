@@ -18,6 +18,7 @@ class PricingData(Base):
     bm_listing_quantity = Column(Integer)
     rf_listing_quantity = Column(Integer)
     update_time = Column(DateTime)
+    swd_stock = Column(Integer)
     bm_minimum_price = Column(Float)
     bm_selling_price = Column(Float)
     rf_minimum_price = Column(Float)
@@ -65,6 +66,8 @@ class PricingData(Base):
             return "rf_suggested_buybox_price"
         if col == "Grab RF Buybox":
             return "grab_rf_buybox"
+        if col == "SWD Stock":
+            return "swd_stock"
 
     def get_data_as_list(self):
         return list(map(
@@ -78,6 +81,7 @@ class PricingData(Base):
                 self.bm_listing_quantity,
                 self.rf_listing_quantity,
                 self.update_time,
+                self.swd_stock,
                 self.bm_minimum_price,
                 self.bm_selling_price,
                 self.rf_minimum_price,
@@ -98,6 +102,7 @@ class PricingData(Base):
             "bm_listing_quantity": self.bm_listing_quantity,
             "rf_listing_quantity": self.rf_listing_quantity,
             "update_time": self.update_time,
+            "swd_stock": self.swd_stock,
             "bm_minimum_price": self.bm_minimum_price,
             "bm_selling_price": self.bm_selling_price,
             "rf_minimum_price": self.rf_minimum_price,
@@ -107,6 +112,79 @@ class PricingData(Base):
             "rf_suggested_buybox_price": self.rf_suggested_buybox_price,
             "grab_rf_buybox": self.grab_rf_buybox
         }
+
+    def to_dict_with_metadata(self):
+        return {
+            "sku": {
+                "value": self.sku,
+                "type": "string"
+            },
+            "activate_pricing_tool":
+                {"value": self.activate_pricing_tool,
+                 "type": "boolean"
+                 },
+            "bm_listing_id":
+                {"value": self.bm_listing_id,
+                 "type": "string"
+                 },
+            "model_name":
+                {"value": self.model_name,
+                 "type": "string"
+                 },
+            "total_quantity":
+                {"value": self.total_quantity,
+                 "type": "integer"
+                 },
+            "bm_listing_quantity":
+                {"value": self.bm_listing_quantity,
+                 "type": "integer"
+                 },
+            "rf_listing_quantity":
+                {"value": self.rf_listing_quantity,
+                 "type": "integer"
+                 },
+            "update_time":
+                {"value": self.update_time,
+                 "type": "datetime"
+                 },
+            "swd_stock":
+                {"value": self.swd_stock,
+                 "type": "integer"
+                 },
+            "bm_minimum_price":
+                {"value": self.bm_minimum_price,
+                 "type": "float"
+                 },
+            "bm_selling_price":
+                {"value": self.bm_selling_price,
+                 "type": "float"
+                 },
+            "rf_minimum_price":
+                {"value": self.rf_minimum_price,
+                 "type": "float"
+                 },
+            "rf_selling_price":
+                {"value": self.rf_selling_price,
+                 "type": "float"
+                 },
+            "rf_buybox_state":
+                {"value": self.rf_buybox_state,
+                 "type": "string"
+                 },
+            "rf_buybox_price":
+                {"value": self.rf_buybox_price,
+                 "type": "float"
+                 },
+            "rf_suggested_buybox_price":
+                {"value": self.rf_suggested_buybox_price,
+                 "type": "float"
+                 },
+            "grab_rf_buybox":
+                {"value": self.grab_rf_buybox,
+                 "type": "boolean"
+                 }
+        }
+
     @staticmethod
     def get_str(string) -> str:
         # if string is of type str return it
@@ -123,4 +201,3 @@ class PricingData(Base):
             return ""
         # if string is of any other type return it as string
         return str(string)
-

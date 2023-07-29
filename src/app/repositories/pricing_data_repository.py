@@ -34,6 +34,7 @@ class PricingDataRepository:
         return pricing_data
 
     def batch_update_pricing_data(self, updates):
+        print(f"updates: {updates}")
         # create a reverse mapping for updates where each column name is mapped to a here each column name is mapped
         # to a tuple of (sku, new_value)
         # e.g. {"bm_minimum_price": [("sku1", 10.0), ("sku2", 20.0)]}

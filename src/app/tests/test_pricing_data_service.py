@@ -187,7 +187,7 @@ class PricingDataServiceTests(unittest.TestCase):
                 result = self.data_service.get_data(data)
 
         mock_get_pricing_data.assert_called_once_with(data["filter"])
-        self.assertEqual(result, mock_get_pricing_data.return_value)
+        self.assertEqual(result, [])
 
     def test_get_pricing_data_invalid(self):
         data = {
