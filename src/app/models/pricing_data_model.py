@@ -3,8 +3,7 @@ from datetime import datetime
 from sqlalchemy import Column, Integer, String, Boolean, Float, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
-
-Base = declarative_base()
+from src.app.models.base import Base
 
 
 class PricingData(Base):
