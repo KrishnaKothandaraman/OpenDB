@@ -15,8 +15,8 @@ jobs:
 
     - name: Install dependencies and build
       run: |
-        cd src/
         source venv/bin/activate
+        cd src/
         cd app/
         pip install -r requirements.txt
         # Add any additional build steps here
