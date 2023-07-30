@@ -28,6 +28,11 @@ jobs:
         source: "src/app"  # Change this to the path of your built Flask app
         target: "/home/ec2-user/orm"
 
+    - name: Print current working directory
+      run: |
+        pwd
+        ls
+
     - name: Start Gunicorn Server
       run: |
         cd /home/ec2-user/orm
