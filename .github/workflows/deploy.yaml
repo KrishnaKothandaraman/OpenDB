@@ -23,7 +23,7 @@ jobs:
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USERNAME }}
+        username: ec2-user
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         source: "src/app"  # Change this to the path of your built Flask app
         target: "/home/ec2-user/orm"
