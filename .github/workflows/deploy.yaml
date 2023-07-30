@@ -35,5 +35,4 @@ jobs:
 
     - name: Start Gunicorn Server
       run: |
-        cd /home/ec2-user/orm
         nohup exec gunicorn --bind :$PORT --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &
