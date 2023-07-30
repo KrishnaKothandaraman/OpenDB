@@ -13,13 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Install dependencies and build
-      run: |
-        source venv/bin/activate
-        cd src/
-        cd app/
-        pip install -r requirements.txt
-        # Add any additional build steps here
+#    - name: Install dependencies and build
+#      run: |
+#        source venv/bin/activate
+#        cd src/app
+#        pip install -r requirements.txt
+#        # Add any additional build steps here
 
     - name: Deploy to EC2
       uses: appleboy/scp-action@master
