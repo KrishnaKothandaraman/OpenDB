@@ -25,13 +25,13 @@ jobs:
     - name: Print current working directory
       run: |
         pwd
-        ls
+        ls ../
         
     - name: Install dependencies and build
       run: |
-       source ../venv/bin/activate
+       source /home/ec2-user/venv/bin/activate
        source ~/.bashrc
-       pip install -r src/app/requirements.txt
+       pip install -r /home/ec2-user/src/app/requirements.txt
        
     - name: Start Gunicorn Server
       run: |
