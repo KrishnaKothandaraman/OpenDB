@@ -13,13 +13,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-#    - name: Install dependencies and build
-#      run: |
-#        source venv/bin/activate
-#        cd src/app
-#        pip install -r requirements.txt
-#        # Add any additional build steps here
-
     - name: Deploy to EC2
       uses: appleboy/scp-action@master
       with:
@@ -33,7 +26,13 @@ jobs:
       run: |
         pwd
         ls
-
+        
+    - name: Install dependencies and build
+      run: |
+       source ../venv/bin/activate
+       source ~/.bashrc
+       pip install -r src/app/requirements.txt
+       
     - name: Start Gunicorn Server
       run: |
         nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &
