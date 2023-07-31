@@ -22,9 +22,16 @@ jobs:
         source: "src/app"  # Change this to the path of your built Flask app
         target: "/home/ec2-user/orm"
         
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
     - name: Install dependencies and build
-      run: ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} '/home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/src/app/requirements.txt'
+      run: |
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/src/app/requirements.txt'
 
     - name: Start Gunicorn Server
       run: |
-        ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/src/app && nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 app:app > gunicorn.log 2>&1 &'
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
