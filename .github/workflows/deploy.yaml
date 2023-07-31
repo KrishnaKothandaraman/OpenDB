@@ -23,9 +23,8 @@ jobs:
         target: "/home/ec2-user/orm"
         
     - name: Install dependencies and build
-      run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/src/app/requirements.txt'
+      run: ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} '/home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/src/app/requirements.txt'
 
     - name: Start Gunicorn Server
       run: |
-        ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/src/app && nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 app:app > gunicorn.log 2>&1 &'
+        ssh -i ${{ secrets.EC2_SSH_PRIVATE_KEY }} ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/src/app && nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 app:app > gunicorn.log 2>&1 &'
