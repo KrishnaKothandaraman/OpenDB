@@ -31,8 +31,8 @@ jobs:
 
     - name: Install dependencies and build
       run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/src/app/requirements.txt'
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/orm/src/app/requirements.txt'
 
     - name: Start Gunicorn Server
       run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/orm/ && nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
