@@ -35,4 +35,4 @@ jobs:
 
     - name: Start Gunicorn Server
       run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/orm/ && nohup exec gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/orm/ && nohup gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
