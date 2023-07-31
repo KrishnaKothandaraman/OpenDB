@@ -29,10 +29,6 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan 43.207.165.181 >> ~/.ssh/known_hosts
 
-    - name: Install dependencies and build
+    - name: Install deps and Start Gunicorn Server
       run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/orm/src/app/requirements.txt'
-
-    - name: Start Gunicorn Server
-      run: |
-        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'cd /home/ec2-user/orm/ && nohup gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
+        ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.EC2_HOST }} 'source /home/ec2-user/venv/bin/activate && source ~/.bashrc && pip install -r /home/ec2-user/orm/src/app/requirements.txt && cd /home/ec2-user/orm/ && nohup gunicorn --bind 0.0.0.0:5000 --workers 1 --threads 2 --timeout 0 src.app.app:app > gunicorn.log 2>&1 &'
