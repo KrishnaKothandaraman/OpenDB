@@ -85,7 +85,7 @@ class PricingDataRepository:
         self.session.commit()
 
     def create_pricing_data(self, sku):
-        self.session.add(PricingData(sku=sku))
+        self.session.add(PricingData(sku=sku, activate_pricing_tool=True))
         self.session.commit()
 
     def get_data(self, filters: Dict[str, Any] = None):
