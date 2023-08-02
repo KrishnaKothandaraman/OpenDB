@@ -4,14 +4,14 @@ import sqlalchemy.exc
 from flask import Blueprint, jsonify, request, session
 from src.app.services.pricing_data_service import PricingDataService
 from src.app.services.authenticator_service import AuthenticatorService
-from src.app.utils.utils import create_database_engine
+from src.app.utils.utils import create_database_pool_engine
 from src.app.utils.utils import ApiResponse
 from flask_api import status
 
 pricing_data_bp = Blueprint("pricing_data", __name__)
-engine = create_database_engine()
-data_service = PricingDataService(engine)
-auth_service = AuthenticatorService(engine)
+pool_engine = create_database_pool_engine()
+data_service = PricingDataService(pool_engine)
+auth_service = AuthenticatorService(pool_engine)
 
 
 # Define a decorator to check for authentication headers

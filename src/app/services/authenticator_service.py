@@ -2,8 +2,8 @@ from src.app.repositories.authenticator_repository import AuthenticatorRepositor
 
 
 class AuthenticatorService:
-    def __init__(self, session):
-        self.repository = AuthenticatorRepository(session)
+    def __init__(self, pool):
+        self.repository = AuthenticatorRepository(pool)
 
     def validate_user(self, user_id, auth_key):
         try:

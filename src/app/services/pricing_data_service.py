@@ -5,8 +5,8 @@ from src.app.validators.pricing_data_validator import PricingDataValidator
 
 
 class PricingDataService:
-    def __init__(self, session):
-        self.repository = PricingDataRepository(session)
+    def __init__(self, pool):
+        self.repository = PricingDataRepository(pool)
         self.validator = PricingDataValidator()
 
     def create_pricing_data(self, data):
