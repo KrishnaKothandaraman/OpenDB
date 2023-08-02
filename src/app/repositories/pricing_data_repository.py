@@ -3,7 +3,7 @@ from typing import List, Dict, Any
 
 from src.app.models.pricing_data_model import PricingData
 from sqlalchemy.orm import Session
-from sqlalchemy import update, case, literal, Engine, select
+from sqlalchemy import update, case, literal, Engine, select, func
 
 
 class PricingDataRepository:
@@ -103,10 +103,12 @@ class PricingDataRepository:
     def get_data(self, filters: Dict[str, Any] = None):
         with self.engine.connect() as conn:
             if not filters:
-                stmt = select(PricingData)
+                # select pricing data order by swd_stock + rf_listing_quantity desc
+                stmt = select(PricingData).order_by(PricingData.rf_listing_quantity.desc())
             else:
                 stmt = select(PricingData).where(
-                    *[(getattr(PricingData, col) == value) for col, value in filters.items()])
+                    *[(getattr(PricingData, col) == value) for col, value in filters.items()])\
+                    .order_by(PricingData.rf_listing_quantity.desc())
 
             session = Session(bind=conn)
 
