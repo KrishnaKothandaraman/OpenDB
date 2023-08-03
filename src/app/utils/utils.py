@@ -39,7 +39,9 @@ def create_database_pool_engine():
                                                              port=DB_PORT,
                                                              user=DB_USER,
                                                              password=DB_PASSWORD,
-                                                             database=DB_NAME))
+                                                             database=DB_NAME),
+                     pool_size=3,
+                     recycle=3600)
 
     # Create the engine using the connection pool
     engine = create_engine('mysql+mysqlconnector://', pool=pool, echo=True)
