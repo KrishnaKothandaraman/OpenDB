@@ -108,6 +108,15 @@ class PricingDataController:
         except ValueError as e:
             return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
 
+    @staticmethod
+    def handle_sales():
+        try:
+            sales = request.get_json()
+            result = data_service.handle_sales(sales)
+            return jsonify(ApiResponse.success(result)), status.HTTP_200_OK
+        except ValueError as e:
+            return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
+
 
 pricing_data_bp.add_url_rule("create-record", methods=["POST"], view_func=PricingDataController.create_pricing_data)
 pricing_data_bp.add_url_rule("insert-record", methods=["POST"],
@@ -119,3 +128,4 @@ pricing_data_bp.add_url_rule("update-record", methods=["POST"],
 pricing_data_bp.add_url_rule("delete-record", methods=["POST"],
                              view_func=PricingDataController.delete_pricing_data)
 pricing_data_bp.add_url_rule("get-records", methods=["POST"], view_func=PricingDataController.get_data)
+pricing_data_bp.add_url_rule("notify-sales", methods=["POST"], view_func=PricingDataController.handle_sales)
