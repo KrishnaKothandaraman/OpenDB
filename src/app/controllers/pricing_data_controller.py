@@ -60,7 +60,7 @@ class PricingDataController:
             return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
         except sqlalchemy.exc.IntegrityError as e:
             return jsonify(ApiResponse.fail(
-                "Integrity check breaks for DB. Possible Duplicate Entry")), status.HTTP_400_BAD_REQUEST
+                "Integrity check breaks for DB. Possible Duplicate Entry")), status.HTTP_409_CONFLICT
 
     @staticmethod
     def insert_pricing_data():
