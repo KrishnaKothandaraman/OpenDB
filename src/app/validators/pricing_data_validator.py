@@ -188,3 +188,29 @@ class PricingDataValidator:
             validate(instance=data, schema=schema)
         except ValidationError as e:
             raise ValueError("Invalid JSON format: " + e.args[0])
+    @staticmethod
+    def validate_handle_sales(data):
+        """Schema of the format {"sales": [{"sku": string, "quantity": integer}]}"""
+        schema = {
+            "type": "object",
+            "properties": {
+                "sales": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "sku": {"type": "string"},
+                            "quantity": {"type": "integer"}
+                        },
+                        "required": ["sku", "quantity"],
+                        "additionalProperties": False
+                    }
+                }
+            },
+            "required": ["sales"],
+            "additionalProperties": False
+        }
+        try:
+            validate(instance=data, schema=schema)
+        except ValidationError as e:
+            raise ValueError("Invalid JSON format: " + e.args[0])

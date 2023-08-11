@@ -116,3 +116,16 @@ class PricingDataRepository:
             session.close()
 
         return result
+
+    def handle_sales(self, sales):
+        print(sales)
+        with self.engine.connect() as conn:
+            session = Session(bind=conn)
+            for sale in sales:
+                sku = sale["sku"]
+                quantity = sale["quantity"]
+                stmt = PricingData.__table__.update().where(PricingData.sku == sku).values(
+                    {"swd_stock": PricingData.swd_stock - quantity})
+                session.execute(stmt)
+            session.commit()
+            session.close()
