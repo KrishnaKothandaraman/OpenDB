@@ -75,7 +75,8 @@ class PricingDataValidator:
                         "rf_buybox_state": {"type": "string", "maxLength": 25},
                         "rf_buybox_price": {"type": "number"},
                         "rf_suggested_buybox_price": {"type": "number"},
-                        "grab_rf_buybox": {"type": "boolean"}
+                        "grab_rf_buybox": {"type": "boolean"},
+                        "refurbed_url": {"type": "string"}
                     },
                     "additionalProperties": False
                 }
@@ -172,7 +173,8 @@ class PricingDataValidator:
                                     "rf_buybox_state": {"type": "string", "maxLength": 25},
                                     "rf_buybox_price": {"type": "number"},
                                     "rf_suggested_buybox_price": {"type": "number"},
-                                    "grab_rf_buybox": {"type": "boolean"}
+                                    "grab_rf_buybox": {"type": "boolean"},
+                                    "refurbed_url": {"type": "string"}
                                 },
                                 "additionalProperties": False
                             }
