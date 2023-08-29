@@ -27,7 +27,7 @@ jobs:
         mkdir -p ~/.ssh
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan 43.207.165.181 >> ~/.ssh/known_hosts
+        ssh-keyscan 175.41.217.132 >> ~/.ssh/known_hosts
 
     - name: Install deps and Start Gunicorn Server
       run: |
