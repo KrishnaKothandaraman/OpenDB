@@ -10,3 +10,4 @@ jsonschema
 pytest
 Flask-API
 gunicorn
+Flask-SQLAlchemy
