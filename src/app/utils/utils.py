@@ -13,10 +13,10 @@ dotenv.load_dotenv()
 # load env variables
 DB_USER = os.getenv("DB_USER")
 DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_HOST = os.getenv("DB_HOST")
+UNIX_SOCKET = os.getenv("INSTANCE_UNIX_SOCKET")
 DB_NAME = os.getenv("DB_NAME")
 DB_PORT = os.getenv("DB_PORT")
-
+DB_HOST = os.getenv("DB_HOST")
 
 # def create_database_engine():
 #     """Create database engine and create schema."""
@@ -28,24 +28,20 @@ DB_PORT = os.getenv("DB_PORT")
 
 def create_database_pool_engine():
     """Create database engine with connection pool and create schema."""
-
-    schema_engine = create_engine(f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}",
-                                  echo=True)
-    Base.metadata.create_all(schema_engine)
-    schema_engine.dispose()
-
+    """Removed for GCP SQL migration"""
+    # schema_engine = create_engine(f"mysql+mysqlconnector://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}",
+    #                               echo=True)
+    # Base.metadata.create_all(schema_engine)
+    # schema_engine.dispose()
     # Create a connection pool with the size 3
-    pool = QueuePool(creator=lambda: mysql.connector.connect(host=DB_HOST,
-                                                             port=DB_PORT,
+    pool = QueuePool(creator=lambda: mysql.connector.connect(unix_socket=UNIX_SOCKET,
                                                              user=DB_USER,
                                                              password=DB_PASSWORD,
                                                              database=DB_NAME),
                      pool_size=3,
                      recycle=3600)
-
     # Create the engine using the connection pool
     engine = create_engine('mysql+mysqlconnector://', pool=pool, echo=True)
-
     return engine
 
 
