@@ -27,6 +27,7 @@ class PricingData(Base):
     rf_suggested_buybox_price = Column(Float)
     grab_rf_buybox = Column(Boolean, default=False)
     refurbed_url = Column(String(200))
+    active_single_order = Column(Boolean, default=False)
 
     @hybrid_property
     def total_quantity(self):
@@ -70,6 +71,8 @@ class PricingData(Base):
             return "swd_stock"
         if col == "Listing URL":
             return "refurbed_url"
+        if col == "Active Single Order":
+            return "active_single_order"
 
     def get_data_as_list(self):
         return list(map(
@@ -92,7 +95,8 @@ class PricingData(Base):
                 self.rf_buybox_price,
                 self.rf_suggested_buybox_price,
                 self.grab_rf_buybox,
-                self.refurbed_url
+                self.refurbed_url,
+                self.active_single_order
             ]))
 
     def to_dict(self):
@@ -114,7 +118,8 @@ class PricingData(Base):
             "rf_buybox_price": self.rf_buybox_price,
             "rf_suggested_buybox_price": self.rf_suggested_buybox_price,
             "grab_rf_buybox": self.grab_rf_buybox,
-            "refurbed_url": self.refurbed_url
+            "refurbed_url": self.refurbed_url,
+            "active_single_order": self.active_single_order
         }
 
     def to_dict_with_metadata(self):
@@ -190,8 +195,11 @@ class PricingData(Base):
             "refurbed_url":
                 {"value": self.refurbed_url,
                  "type": "string"
+                 },
+            "active_single_order":
+                {"value": self.active_single_order,
+                 "type": "boolean"
                  }
-
         }
 
     @staticmethod
