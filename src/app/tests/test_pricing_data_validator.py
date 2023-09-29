@@ -72,7 +72,8 @@ class TestPricingDataValidator(unittest.TestCase):
             "rf_buybox_state": "New",
             "rf_buybox_price": 0.0,
             "rf_suggested_buybox_price": 0.0,
-            "grab_rf_buybox": True
+            "grab_rf_buybox": True,
+            "active_single_order": False
         }
         try:
             PricingDataValidator.validate_insert_pricing_data(data)

@@ -38,12 +38,13 @@ class PricingDataValidator:
                 "rf_buybox_state": {"type": "string", "maxLength": 25},
                 "rf_buybox_price": {"type": "number"},
                 "rf_suggested_buybox_price": {"type": "number"},
-                "grab_rf_buybox": {"type": "boolean"}
+                "grab_rf_buybox": {"type": "boolean"},
+                "active_single_order": {"type": "boolean"}
             },
             "required": ["sku", "activate_pricing_tool", "bm_listing_id", "model_name", "bm_listing_quantity",
                          "rf_listing_quantity", "update_time", "bm_minimum_price", "bm_selling_price",
                          "rf_minimum_price", "rf_selling_price", "rf_buybox_state", "rf_buybox_price",
-                         "rf_suggested_buybox_price", "grab_rf_buybox"],
+                         "rf_suggested_buybox_price", "grab_rf_buybox", "active_single_order"],
             "additionalProperties": False
         }
 
@@ -76,7 +77,8 @@ class PricingDataValidator:
                         "rf_buybox_price": {"type": "number"},
                         "rf_suggested_buybox_price": {"type": "number"},
                         "grab_rf_buybox": {"type": "boolean"},
-                        "refurbed_url": {"type": "string"}
+                        "refurbed_url": {"type": "string"},
+                        "active_single_order": {"type": "boolean"},
                     },
                     "additionalProperties": False
                 }
@@ -130,7 +132,8 @@ class PricingDataValidator:
                         "rf_buybox_state": {"type": "string", "maxLength": 25},
                         "rf_buybox_price": {"type": "number"},
                         "rf_suggested_buybox_price": {"type": "number"},
-                        "grab_rf_buybox": {"type": "boolean"}
+                        "grab_rf_buybox": {"type": "boolean"},
+                        "active_single_order": {"type": "boolean"}
                     },
                     "additionalProperties": False
                 }
@@ -174,7 +177,8 @@ class PricingDataValidator:
                                     "rf_buybox_price": {"type": "number"},
                                     "rf_suggested_buybox_price": {"type": "number"},
                                     "grab_rf_buybox": {"type": "boolean"},
-                                    "refurbed_url": {"type": "string"}
+                                    "refurbed_url": {"type": "string"},
+                                    "active_single_order": {"type": "boolean"}
                                 },
                                 "additionalProperties": False
                             }
@@ -190,6 +194,7 @@ class PricingDataValidator:
             validate(instance=data, schema=schema)
         except ValidationError as e:
             raise ValueError("Invalid JSON format: " + e.args[0])
+
     @staticmethod
     def validate_handle_sales(data):
         """Schema of the format {"sales": [{"sku": string, "quantity": integer}]}"""
