@@ -11,3 +11,8 @@ pytest
 Flask-API
 gunicorn
 Flask-SQLAlchemy
+requests
+charset-normalizer
+python-dotenv~=1.0.0
+Werkzeug==2.2.2
+markupsafe==2.1.1
