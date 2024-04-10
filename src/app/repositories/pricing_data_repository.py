@@ -22,7 +22,8 @@ class PricingDataRepository:
             # parse String of format dd/mm/yyyy hh:mm:ss to datetime object
             update_time = datetime.strptime(update_time, "%d/%m/%Y %H:%M:%S")
 
-            pricing_data = PricingData(sku=sku, activate_pricing_tool=activate_pricing_tool, bm_listing_id=bm_listing_id,
+            pricing_data = PricingData(sku=sku, activate_pricing_tool=activate_pricing_tool,
+                                       bm_listing_id=bm_listing_id,
                                        model_name=model_name,
                                        bm_listing_quantity=bm_listing_quantity, rf_listing_quantity=rf_listing_quantity,
                                        update_time=update_time,
@@ -96,7 +97,7 @@ class PricingDataRepository:
     def create_pricing_data(self, sku):
         with self.engine.connect() as conn:
             session = Session(bind=conn)
-            session.add(PricingData(sku=sku, activate_pricing_tool=True))
+            session.add(PricingData(sku=sku, activate_pricing_tool=True, update_time=datetime.now()))
             session.commit()
             session.close()
 
@@ -107,7 +108,7 @@ class PricingDataRepository:
                 stmt = select(PricingData).order_by(PricingData.rf_listing_quantity.desc())
             else:
                 stmt = select(PricingData).where(
-                    *[(getattr(PricingData, col) == value) for col, value in filters.items()])\
+                    *[(getattr(PricingData, col) == value) for col, value in filters.items()]) \
                     .order_by(PricingData.rf_listing_quantity.desc())
 
             session = Session(bind=conn)
