@@ -18,6 +18,8 @@ class PricingData(Base):
     rf_listing_quantity = Column(Integer)
     update_time = Column(DateTime)
     swd_stock = Column(Integer)
+    high_battery_health = Column(Integer)
+    low_battery_health = Column(Integer)
     bm_minimum_price = Column(Float)
     bm_selling_price = Column(Float)
     rf_minimum_price = Column(Float)
@@ -67,8 +69,12 @@ class PricingData(Base):
             return "rf_suggested_buybox_price"
         if col == "Grab RF Buybox":
             return "grab_rf_buybox"
-        if col == "SWD Stock":
+        if col == "Total Stock":
             return "swd_stock"
+        if col == ">85%":
+            return "high_battery_health"
+        if col == ">80%":
+            return "low_battery_health"
         if col == "Listing URL":
             return "refurbed_url"
         if col == "Active Single Order":
@@ -87,6 +93,8 @@ class PricingData(Base):
                 self.rf_listing_quantity,
                 self.update_time,
                 self.swd_stock,
+                self.high_battery_health,
+                self.low_battery_health,
                 self.bm_minimum_price,
                 self.bm_selling_price,
                 self.rf_minimum_price,
@@ -110,6 +118,8 @@ class PricingData(Base):
             "rf_listing_quantity": self.rf_listing_quantity,
             "update_time": self.update_time,
             "swd_stock": self.swd_stock,
+            "high_battery_health": self.high_battery_health,
+            "low_battery_health": self.low_battery_health,
             "bm_minimum_price": self.bm_minimum_price,
             "bm_selling_price": self.bm_selling_price,
             "rf_minimum_price": self.rf_minimum_price,
@@ -158,6 +168,14 @@ class PricingData(Base):
                  },
             "swd_stock":
                 {"value": self.swd_stock,
+                 "type": "integer"
+                 },
+            "high_battery_health":
+                {"value": self.high_battery_health,
+                 "type": "integer"
+                 },
+            "low_battery_health":
+                {"value": self.low_battery_health,
                  "type": "integer"
                  },
             "bm_minimum_price":
