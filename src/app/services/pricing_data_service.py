@@ -1,5 +1,6 @@
 from flask_sqlalchemy.query import Query
 
+
 from src.app.repositories.pricing_data_repository import PricingDataRepository
 from src.app.validators.pricing_data_validator import PricingDataValidator
 
@@ -64,9 +65,9 @@ class PricingDataService:
         return self.repository.update_pricing_data(sku, new_values)
 
     def delete_pricing_data(self, data):
-        """Support both single SKU and multiple SKUs for deletion"""
+        """Support both single SKU and multiple SKUs - Hard Delete"""
         try:
-            # Support both formats: {"sku": "ABC"} or {"skus": ["ABC", "DEF"]}
+            # Support both formats
             if isinstance(data, dict):
                 if "skus" in data and isinstance(data["skus"], list):
                     skus = data["skus"]
@@ -82,7 +83,7 @@ class PricingDataService:
             if not skus:
                 raise ValueError("No valid SKUs provided for deletion")
 
-            logger.info(f"Deleting {len(skus)} SKUs: {skus}")
+            print(f"Deleting {len(skus)} SKUs: {skus}")   # Simple print for now
 
             results = []
             for sku in skus:
@@ -90,7 +91,7 @@ class PricingDataService:
                     result = self.repository.delete_pricing_data(sku)
                     results.append({"sku": sku, "status": "success"})
                 except Exception as e:
-                    logger.error(f"Failed to delete {sku}: {e}")
+                    print(f"Failed to delete {sku}: {e}")
                     results.append({"sku": sku, "status": "failed", "error": str(e)})
 
             return {
@@ -99,7 +100,7 @@ class PricingDataService:
             }
 
         except Exception as e:
-            logger.exception("Delete failed in PricingDataService")
+            print(f"Delete failed in PricingDataService: {e}")
             raise
 
     def get_data(self, filters):
