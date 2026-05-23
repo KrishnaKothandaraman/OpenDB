@@ -63,13 +63,44 @@ class PricingDataService:
         new_values = json_data["new_values"]
         return self.repository.update_pricing_data(sku, new_values)
 
-    def delete_pricing_data(self, json_data):
+    def delete_pricing_data(self, data):
+        """Support both single SKU and multiple SKUs for deletion"""
         try:
-            self.validator.validate_delete_pricing_data(json_data)
+            # Support both formats: {"sku": "ABC"} or {"skus": ["ABC", "DEF"]}
+            if isinstance(data, dict):
+                if "skus" in data and isinstance(data["skus"], list):
+                    skus = data["skus"]
+                else:
+                    skus = [data.get("sku")]
+            elif isinstance(data, list):
+                skus = data
+            else:
+                skus = [data]
+
+            skus = [str(s).strip() for s in skus if s]
+
+            if not skus:
+                raise ValueError("No valid SKUs provided for deletion")
+
+            logger.info(f"Deleting {len(skus)} SKUs: {skus}")
+
+            results = []
+            for sku in skus:
+                try:
+                    result = self.repository.delete_pricing_data(sku)
+                    results.append({"sku": sku, "status": "success"})
+                except Exception as e:
+                    logger.error(f"Failed to delete {sku}: {e}")
+                    results.append({"sku": sku, "status": "failed", "error": str(e)})
+
+            return {
+                "deleted_count": len([r for r in results if r["status"] == "success"]),
+                "results": results
+            }
+
         except Exception as e:
-            raise ValueError("Invalid JSON format: " + str(e))
-        sku = json_data["sku"]
-        return self.repository.delete_pricing_data(sku)
+            logger.exception("Delete failed in PricingDataService")
+            raise
 
     def get_data(self, filters):
         try:

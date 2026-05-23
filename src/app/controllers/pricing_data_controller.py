@@ -94,10 +94,23 @@ class PricingDataController:
     def delete_pricing_data():
         try:
             json_data = request.get_json()
-            result = data_service.delete_pricing_data(json_data)
+            
+            # Support both single SKU and multiple SKUs
+            if isinstance(json_data, dict) and "skus" in json_data and isinstance(json_data["skus"], list):
+                skus = json_data["skus"]
+            elif isinstance(json_data, dict) and "sku" in json_data:
+                skus = [json_data["sku"]]
+            else:
+                skus = [json_data] if json_data else []
+
+            result = data_service.delete_pricing_data(skus)
             return jsonify(ApiResponse.success(result)), status.HTTP_202_ACCEPTED
+
         except ValueError as e:
-            return jsonify(ApiResponse.fail(e.args[0])), status.HTTP_400_BAD_REQUEST
+            return jsonify(ApiResponse.fail(e.args[0], "Delete Pricing Data", "Invalid input")), status.HTTP_400_BAD_REQUEST
+        except Exception as e:
+            traceback.print_exc()
+            return jsonify(ApiResponse.fail(str(e), "Delete Pricing Data", "Contact Developer")), status.HTTP_500_INTERNAL_SERVER_ERROR
 
     @staticmethod
     def get_data():
